@@ -1,5 +1,3 @@
-local Blue = DarkRP -- Compatability
-
 local blocked = {
 	["models/props_buildings/collapsedbuilding01a.mdl"] = true,
 	["models/props_buildings/collapsedbuilding01awall.mdl"] = true,
@@ -337,14 +335,16 @@ hook.Add("PlayerSpawnProp", "CPG_NoFuckers", function(ply, model)
         		)
             end
 
-            Blue.notify(ply, 1, 4, "Do not place bad props!\nWarnings: " .. max_warnings - interaction_table.warnings .. " left.")
+            if (max_warnings - interaction_table.warnings) ~= 0 then
+                DarkRP.notify(ply, 1, 4, "Do not place bad props!\nWarnings: " .. max_warnings - interaction_table.warnings .. " left.")
+            end
         else
             fuckers[ply:SteamID64()] = {
             	models = {model},
             	warnings = 1,
             }
 
-            Blue.notify(ply, 1, 4, "Do not place bad props!\nThis is the first warning.")
+            DarkRP.notify(ply, 1, 4, "Do not place bad props!\nThis is the first warning.")
         end
 
 		return false
