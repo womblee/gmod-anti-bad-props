@@ -1,3 +1,5 @@
+local Blue = DarkRP -- Compatability
+
 local blocked = {
 	["models/props_buildings/collapsedbuilding01a.mdl"] = true,
 	["models/props_buildings/collapsedbuilding01awall.mdl"] = true,
