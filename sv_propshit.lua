@@ -306,33 +306,35 @@ local blocked = {
 	["models/props_junk/TrashDumpster02.mdl"] = true,
 }
 
+-- Necessary
 local fuckers = {}
 local max_warnings = 6
+
+-- Ughh
 local tbl_remove = table.remove
 local tbl_insert = table.insert
 
--- Made by nloginov
-
+-- Main
 hook.Add("PlayerSpawnProp", "CPG_NoFuckers", function(ply, model)
-	if blocked[model] then
-		local interaction_table = fuckers[ply:SteamID64()]
+    if blocked[model] then
+	local interaction_table = fuckers[ply:SteamID64()]
 
         if interaction_table then
-        	interaction_table.warnings = interaction_table.warnings + 1
+            if table.HasValue(interaction_table.models, model) then
+                interaction_table.warnings = interaction_table.warnings + 1
 
-        	if table.HasValue(interaction_table.models, model) then
-        	    if fuckers[ply:SteamID64()].warnings >= max_warnings then
-                   ply:Kick("You have been warned many times about placing these props, yet you still continued to place them!")
+        	if fuckers[ply:SteamID64()].warnings >= max_warnings then
+                    ply:Kick("You have been warned many times about placing these props, yet you still continued to place them!")
 
-                   fuckers[ply:SteamID64()] = nil
-        	    end
-        	else
-        		tbl_insert(interaction_table.models, 
-        		    {
-        		    	models = {model},
-        		    	warnings = 1,
-        		    }
-        		)
+                    fuckers[ply:SteamID64()] = nil
+        	end
+            else
+        	tbl_insert(interaction_table.models, 
+                   {
+        	       models = {model},
+        	       warnings = 1,
+        	   }
+        	)
             end
 
             if (max_warnings - interaction_table.warnings) ~= 0 then
@@ -347,6 +349,6 @@ hook.Add("PlayerSpawnProp", "CPG_NoFuckers", function(ply, model)
             DarkRP.notify(ply, 1, 4, "Do not place bad props!\nThis is the first warning.")
         end
 
-		return false
-	end
+	return false
+    end
 end)
